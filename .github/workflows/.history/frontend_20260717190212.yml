@@ -25,8 +25,9 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Compile Production Build
         run: npm run build -- --configuration=production
-      - name: Deploy Production Artifacts to Vercel
-        run: npx vercel@latest --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        - name: Deploy Production Artifacts to Vercel
+                # Uses the native, official Vercel engine dynamically
+                run: npx vercel@latest --prod --token=${{ secrets.VERCEL_TOKEN }}
+                env:
+                VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
