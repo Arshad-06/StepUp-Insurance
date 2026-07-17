@@ -1,0 +1,574 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
+  <div class="max-w-7xl mx-auto space-y-8">
+    <header
+      class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100"
+    >
+      <div>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+          Agent Dashboard
+        </h1>
+
+        <p class="text-slate-500 mt-4 text-sm md:text-base">
+          Welcome Back,
+          <span class="font-bold text-indigo-600">{{
+            (agentName$ | async) || "Agent"
+          }}</span>
+        </p>
+
+        <p class="text-slate-500 mt-1 text-sm md:text-base">
+          Your Agent ID:
+          <span class="font-bold text-indigo-600">{{
+            (agentId$ | async) || "Agent ID"
+          }}</span>
+        </p>
+      </div>
+
+      <button
+        (click)="exportToPDF()"
+        [disabled]="!allCustomerPolicies || allCustomerPolicies.length === 0"
+        class="bg-indigo-50 text-indigo-700 font-semibold border border-indigo-100 px-5 py-2.5 rounded-xl hover:bg-indigo-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2"
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+
+        Download PDF Report
+      </button>
+    </header>
+
+    <div
+      *ngIf="isLoading"
+      class="flex flex-col items-center justify-center min-h-[75vh] w-full animate-fadeIn select-none pb-32"
+    >
+      <div class="relative flex items-center justify-center w-20 h-20">
+        <div
+          class="absolute inset-0 rounded-full border-t-2 border-r-2 border-indigo-500/80 animate-spin shadow-[0_0_15px_rgba(99,102,241,0.2)]"
+        ></div>
+
+        <div
+          class="absolute inset-2 rounded-full border-b-2 border-l-2 border-blue-400/80 animate-spin shadow-[0_0_10px_rgba(96,165,250,0.2)]"
+          style="animation-direction: reverse; animation-duration: 1.5s"
+        ></div>
+
+        <div
+          class="absolute w-10 h-10 bg-gradient-to-tr from-indigo-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/40 animate-pulse"
+        >
+          <svg
+            class="w-5 h-5 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+            ></path>
+          </svg>
+        </div>
+      </div>
+
+      <h3
+        class="mt-8 text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest"
+      >
+        Loading Stats...
+      </h3>
+
+      <p
+        class="mt-1.5 text-xs font-extrabold text-slate-400 dark:text-slate-500 flex items-center gap-1.5"
+      >
+        <svg
+          class="w-3.5 h-3.5 text-indigo-400 animate-pulse"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Securely Fetching Your Data...
+      </p>
+    </div>
+
+    <div
+      *ngIf="!isLoading"
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md hover:translate-y-1 transition-all duration-300"
+      >
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+
+        <h3
+          class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1"
+        >
+          Total Customers
+        </h3>
+
+        <p class="text-4xl font-black text-slate-900">{{ totalCustomers }}</p>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md hover:translate-y-1 transition-all duration-300"
+      >
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+
+        <h3
+          class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1"
+        >
+          Current Year Policies
+        </h3>
+
+        <p class="text-4xl font-black text-slate-900">
+          {{ totalPoliciesCurrentYear }}
+        </p>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md hover:translate-y-1 transition-all duration-300"
+      >
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
+
+        <h3
+          class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1"
+        >
+          Estimated Annual Profit
+        </h3>
+
+        <p class="text-4xl font-black text-slate-900">
+          {{ annualProfit | currency: "INR" : "symbol" : "1.2-2" }}
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="totalCustomers > 0" class="space-y-8 animate-fadeIn">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div class="lg:col-span-1 space-y-16">
+          <ng-container *ngIf="allCustomerPolicies.length > 0">
+            <div
+              class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 h-[420px] flex flex-col"
+            >
+              <h3
+                class="text-sm font-extrabold text-slate-800 mb-2 uppercase tracking-wide"
+              >
+                Policy Distribution
+              </h3>
+
+              <div class="flex-grow w-full relative">
+                <canvas
+                  baseChart
+                  [data]="doughnutChartData"
+                  [type]="'doughnut'"
+                  [options]="{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { position: 'bottom' } },
+                  }"
+                >
+                </canvas>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 h-[420px] flex flex-col"
+            >
+              <h3
+                class="text-sm font-extrabold text-slate-800 mb-2 uppercase tracking-wide"
+              >
+                Top 5 Customers
+              </h3>
+
+              <div class="flex-grow w-full relative">
+                <canvas
+                  baseChart
+                  [data]="barChartData"
+                  [type]="'bar'"
+                  [options]="{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                    },
+                  }"
+                >
+                </canvas>
+              </div>
+            </div>
+          </ng-container>
+
+          <div
+            *ngIf="allCustomerPolicies.length === 0"
+            class="bg-white/80 backdrop-blur-md text-slate-800 rounded-3xl p-8 shadow-sm border border-indigo-100 relative overflow-hidden space-y-6 animate-fadeIn"
+          >
+            <div
+              class="absolute -right-12 -top-12 w-48 h-48 bg-indigo-50 rounded-full blur-2xl pointer-events-none"
+            ></div>
+
+            <div
+              class="absolute -left-12 -bottom-12 w-48 h-48 bg-blue-50 rounded-full blur-2xl pointer-events-none"
+            ></div>
+
+            <div class="flex items-center justify-between relative z-10">
+              <span
+                class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-black uppercase tracking-wider"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-ping"
+                ></span>
+
+                Waiting For Policies
+              </span>
+
+              <svg
+                class="w-5 h-5 text-indigo-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6h6v-2h-4V7z"
+                />
+              </svg>
+            </div>
+
+            <div class="relative z-10">
+              <h3 class="text-2xl font-black tracking-tight text-slate-900">
+                No Policies Available
+              </h3>
+
+              <p
+                class="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed"
+              >
+                StepUp Insurance Visualization Needs Atleast One Customer Policy
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-2 relative z-10">
+              <div
+                class="flex items-start gap-3.5 p-3 rounded-2xl bg-slate-50/80 border border-slate-100/80"
+              >
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  1
+                </div>
+
+                <div>
+                  <h5
+                    class="text-xs font-bold text-slate-700 uppercase tracking-wider"
+                  >
+                    Filter Customers
+                  </h5>
+
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    You Can Search For Required Customers Via The Search Bar
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="flex items-start gap-3.5 p-3 rounded-2xl bg-slate-50/80 border border-slate-100/80"
+              >
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  2
+                </div>
+
+                <div>
+                  <h5
+                    class="text-xs font-bold text-slate-700 uppercase tracking-wider"
+                  >
+                    Get Insightful Visualizations
+                  </h5>
+
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Visualize Policy Distribution & Top Customers
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="flex items-start gap-3.5 p-3 rounded-2xl bg-slate-50/80 border border-slate-100/80"
+              >
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-indigo-500/50"
+                >
+                  ⚡
+                </div>
+
+                <div>
+                  <h5
+                    class="text-xs font-bold text-indigo-700 uppercase tracking-wider"
+                  >
+                    Instant Policy Lapse Reminders
+                  </h5>
+
+                  <p class="text-[11px] text-indigo-200 mt-0.5">
+                    Send Instant Email Reminders To Your Customers
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] font-black tracking-widest text-slate-400 relative z-10"
+            >
+              <span>StepUp Insurance</span>
+
+              <span class="text-indigo-600">{{
+                (agentName$ | async) || "Agent"
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+          <div class="mb-6 relative">
+            <input
+              type="text"
+              (keyup)="updateSearch($event)"
+              placeholder="Search Customers By Name Or Contact..."
+              class="w-full px-4 py-3 pl-10 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition text-slate-700 font-medium placeholder-slate-400"
+            />
+
+            <svg
+              class="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </div>
+
+          <ng-container
+            *ngFor="
+              let customer of groupedPolicies
+                | keyvalue: sortCustomersByPolicyCount
+            "
+          >
+            <details
+              *ngIf="
+                matchesSearch(customer.key, customer.value.customerContact)
+              "
+              class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-4"
+            >
+              <summary
+                class="px-6 py-4 bg-slate-50 cursor-pointer list-none flex items-center justify-between hover:bg-slate-100 transition"
+              >
+                <h3
+                  class="font-bold text-slate-800 text-lg flex items-center gap-3"
+                >
+                  <span
+                    class="bg-indigo-100 text-indigo-700 w-8 h-8 flex items-center justify-center rounded-full text-xs font-black"
+                  >
+                    {{ customer.key.charAt(0) }}
+                  </span>
+
+                  {{ customer.key }} (Contact :
+                  {{ customer.value.customerContact }})
+                </h3>
+
+                <span
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest group-open:hidden"
+                >
+                  Click To Expand - {{ customer.value.policies.length }}
+
+                  Policies ▼</span
+                >
+
+                <span
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest hidden group-open:block"
+                >
+                  Collapse ▲
+                </span>
+              </summary>
+
+              <div
+                *ngIf="customer.value.policies.length === 0"
+                class="py-6 text-center text-rose-400 bg-rose-50 border-t border-rose-100"
+              >
+                <p class="text-sm font-medium italic">
+                  No policies found for the given customer
+                </p>
+              </div>
+
+              <div class="overflow-x-auto w-full">
+                <table
+                  *ngIf="customer.value.policies.length > 0"
+                  class="w-full text-left text-sm whitespace-nowrap"
+                >
+                  <thead
+                    class="text-slate-400 uppercase font-bold text-[10px] tracking-wider bg-white"
+                  >
+                    <tr>
+                      <th class="px-6 py-3">Policy ID</th>
+
+                      <th class="px-6 py-3">Policy Type</th>
+
+                      <th class="px-6 py-3">Premium Amount</th>
+
+                      <th class="px-6 py-3">Last Payment Date</th>
+
+                      <th class="px-6 py-3 text-center">Status</th>
+
+                      <th class="px-6 py-3 text-center">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="divide-y divide-slate-50">
+                    <tr
+                      *ngFor="let policy of customer.value.policies"
+                      class="hover:bg-slate-50 transition"
+                    >
+                      <td class="px-6 py-4">
+                        <p class="font-bold text-slate-900">
+                          {{ policy.policyId }}
+                        </p>
+                      </td>
+
+                      <td class="px-6 py-4 font-semibold text-slate-700">
+                        {{
+                          policy.policyType.replace("_INSURANCE", "")
+                            | titlecase
+                        }}
+                      </td>
+
+                      <td class="px-6 py-4 font-bold text-slate-900">
+                        {{ policy.premiumAmount | currency: "INR" }}
+                      </td>
+
+                      <td class="px-6 py-4 text-slate-600 font-medium">
+                        {{
+                          policy.lastPaymentDate
+                            ? (policy.lastPaymentDate | date: "MMM dd,yyyy")
+                            : "Pending"
+                        }}
+                      </td>
+
+                      <td class="px-6 py-4 text-center">
+                        <span
+                          class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border"
+                          [ngClass]="{
+                            'bg-emerald-50 text-emerald-700 border-emerald-200':
+                              getPolicyStatus(policy) === 'ACTIVE',
+
+                            'bg-slate-50 text-slate-700 border-slate-200':
+                              getPolicyStatus(policy) === 'EXPIRED',
+
+                            'bg-rose-50 text-rose-700 border-rose-200':
+                              getPolicyStatus(policy) === 'LAPSED',
+                          }"
+                        >
+                          {{ getPolicyStatus(policy) }}
+                        </span>
+                      </td>
+
+                      <td class="px-6 py-4 text-center">
+                        <button
+                          *ngIf="getPolicyStatus(policy) === 'LAPSED'"
+                          (click)="
+                            sendReminder(
+                              policy.policyId,
+                              customer.value.customerName
+                            )
+                          "
+                          title="Send Payment Reminder"
+                          class="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition duration-200"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                            ></path>
+                          </svg>
+                        </button>
+
+                        <span
+                          *ngIf="getPolicyStatus(policy) !== 'LAPSED'"
+                          class="text-slate-300 font-bold text-lg"
+                        >
+                          -
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </ng-container>
+        </div>
+
+        <div
+          *ngIf="(groupedPolicies | keyvalue).length === 0"
+          class="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300"
+        >
+          <p class="text-slate-400 font-medium">No Policies Found</p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="totalCustomers == 0 && !isLoading"
+      class="min-h-[420px] flex flex-col items-center justify-center p-10 bg-white/70 backdrop-blur-md rounded-3xl border-2 border-dashed border-slate-200 shadow-2xs text-center my-6 animate-fadeIn"
+    >
+      <div
+        class="w-20 h-20 rounded-full bg-gradient-to-tr from-indigo-500/10 to-blue-500/10 flex items-center justify-center mb-5 border border-indigo-500/20 text-indigo-600 shadow-inner"
+      >
+        <svg class="w-10 h-10 stroke-current" fill="none" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+          />
+        </svg>
+      </div>
+
+      <h3 class="text-xl font-black text-slate-800 tracking-tight">
+        Your Roster Is Currently Clear
+      </h3>
+
+      <p
+        class="text-sm font-medium text-slate-500 max-w-md mt-2 leading-relaxed"
+      >
+        There Are Zero StepUp Customers Assigned To Your Agent ID.
+      </p>
+
+      <div
+        class="mt-7 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-bold shadow-2xs"
+      >
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+
+        Waiting For Customers...
+      </div>
+    </div>
+  </div>
+</div>

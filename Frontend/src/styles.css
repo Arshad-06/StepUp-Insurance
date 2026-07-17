@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+html.dark {
+  filter: invert(0.9) hue-rotate(180deg);
+
+  background: #0f172a;
+}
+
+html.dark img,
+html.dark video,
+html.dark svg {
+  filter: invert(1) hue-rotate(180deg);
+}

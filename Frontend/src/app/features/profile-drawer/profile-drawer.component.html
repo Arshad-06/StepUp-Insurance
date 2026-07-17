@@ -1,0 +1,442 @@
+<div
+  class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity animate-fadeIn"
+  (click)="close()"
+  (keydown.enter)="close()"
+></div>
+
+<div
+  class="fixed inset-y-4 right-4 w-full max-w-[400px] bg-white rounded-3xl shadow-2xl z-50 flex flex-col transform transition-transform animate-slideInRight overflow-hidden border border-slate-100"
+>
+  <div
+    class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-50"
+  >
+    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="w-6 h-6 text-indigo-600"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+          clip-rule="evenodd"
+        />
+      </svg>
+
+      My Profile
+    </h2>
+
+    <button
+      (click)="close()"
+      class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors focus:outline-none"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <div
+    *ngIf="isLoading"
+    class="flex-1 flex flex-col items-center justify-center space-y-4"
+  >
+    <div
+      class="w-12 h-12 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"
+    ></div>
+
+    <p class="text-sm font-semibold text-slate-400">Loading Profile Data...</p>
+  </div>
+
+  <div
+    *ngIf="!isLoading && profileData"
+    class="flex-1 overflow-y-auto p-6 space-y-8"
+  >
+    <div
+      class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 to-violet-400"
+      ></div>
+
+      <div class="flex items-center gap-5 relative z-10">
+        <div
+          class="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold uppercase border border-indigo-100"
+        >
+          {{ profileData.name?.charAt(0) || "U" }}
+        </div>
+
+        <div class="flex-1">
+          <div class="mb-2.5">
+            <span
+              class="px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-widest"
+              [ngClass]="
+                profileData.role === 'CUSTOMER'
+                  ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                  : 'bg-violet-50 text-violet-600 border border-violet-100'
+              "
+            >
+              {{ profileData.role }}
+            </span>
+          </div>
+
+          <div class="space-y-2 mt-1">
+            <div *ngIf="profileData.agentId" class="flex items-center gap-2.5">
+              <div
+                class="w-6 h-6 rounded-md bg-slate-50 flex items-center justify-center border border-slate-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="w-3.5 h-3.5 text-indigo-500"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                  />
+                </svg>
+              </div>
+
+              <span class="text-sm font-medium text-slate-500">Agent ID</span>
+
+              <span
+                class="text-sm font-bold text-slate-800 tracking-wide ml-auto"
+                >{{ profileData.agentId }}</span
+              >
+            </div>
+
+            <div
+              *ngIf="profileData.customerId"
+              class="flex items-center gap-2.5"
+            >
+              <div
+                class="w-6 h-6 rounded-md bg-slate-50 flex items-center justify-center border border-slate-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="w-3.5 h-3.5 text-emerald-500"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"
+                  />
+                </svg>
+              </div>
+
+              <span class="text-sm font-medium text-slate-500"
+                >Customer ID</span
+              >
+
+              <span
+                class="text-sm font-bold text-slate-800 tracking-wide ml-auto"
+                >{{ profileData.customerId }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-widest">
+          Personal Details
+        </h3>
+
+        <button
+          (click)="toggleEditMode()"
+          class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors uppercase tracking-wider focus:outline-none"
+        >
+          {{ isEditMode ? "Cancel Edit" : "Edit Details" }}
+        </button>
+      </div>
+
+      <form [formGroup]="profileForm" class="space-y-4">
+        <div>
+          <label
+            for="name"
+            class="block text-[11px] font-medium text-slate-500 mb-1.5 px-1"
+            >Full Name</label
+          >
+
+          <input
+            type="text"
+            formControlName="name"
+            [readOnly]="!isEditMode"
+            class="w-full px-4 py-3 rounded-xl text-sm transition-all"
+            [ngClass]="
+              !isEditMode
+                ? 'bg-transparent border-transparent text-slate-700 font-medium focus:outline-none pointer-events-none'
+                : profileForm.get('name')?.invalid &&
+                    profileForm.get('name')?.dirty
+                  ? 'bg-rose-50/30 border border-rose-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 text-slate-800'
+                  : 'bg-white border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-800'
+            "
+          />
+
+          <div
+            *ngIf="
+              isEditMode &&
+              profileForm.get('name')?.invalid &&
+              profileForm.get('name')?.dirty
+            "
+            class="mt-1.5 px-1 text-[10px] font-medium text-rose-500 flex items-start gap-1 animate-fade-in"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-3.5 h-3.5 shrink-0"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            <span *ngIf="profileForm.get('name')?.hasError('required')"
+              >New Name Can't Be Empty!</span
+            >
+
+            <span *ngIf="profileForm.get('name')?.hasError('pattern')"
+              >Must Start With Uppercase, Followed By Lowercase</span
+            >
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="email"
+            class="block text-[11px] font-medium text-slate-500 mb-1.5 px-1"
+            >Email Address</label
+          >
+
+          <input
+            type="email"
+            formControlName="email"
+            [readOnly]="!isEditMode"
+            class="w-full px-4 py-3 rounded-xl text-sm transition-all"
+            [ngClass]="
+              !isEditMode
+                ? 'bg-transparent border-transparent text-slate-700 font-medium focus:outline-none pointer-events-none'
+                : profileForm.get('email')?.invalid &&
+                    profileForm.get('email')?.dirty
+                  ? 'bg-rose-50/30 border border-rose-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 text-slate-800'
+                  : 'bg-white border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-800'
+            "
+          />
+
+          <div
+            *ngIf="
+              isEditMode &&
+              profileForm.get('email')?.invalid &&
+              profileForm.get('email')?.dirty
+            "
+            class="mt-1.5 px-1 text-[10px] font-medium text-rose-500 flex items-start gap-1 animate-fade-in"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-3.5 h-3.5 shrink-0"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            <span *ngIf="profileForm.get('email')?.hasError('required')"
+              >New Email Address Can't Be Empty</span
+            >
+
+            <span *ngIf="profileForm.get('email')?.hasError('email')"
+              >Invalid Email Address</span
+            >
+
+            <span *ngIf="profileForm.get('email')?.hasError('emailTaken')"
+              >Email Is Already Taken</span
+            >
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="contactInfo"
+            class="block text-[11px] font-medium text-slate-500 mb-1.5 px-1"
+            >Contact Number</label
+          >
+
+          <input
+            type="text"
+            formControlName="contactInfo"
+            [readOnly]="!isEditMode"
+            inputmode="numeric"
+            (keypress)="restrictToNumbers($event)"
+            minlength="10"
+            maxlength="10"
+            class="w-full px-4 py-3 rounded-xl text-sm transition-all"
+            [ngClass]="
+              !isEditMode
+                ? 'bg-transparent border-transparent text-slate-700 font-medium focus:outline-none pointer-events-none'
+                : profileForm.get('contactInfo')?.invalid &&
+                    profileForm.get('contactInfo')?.dirty
+                  ? 'bg-rose-50/30 border border-rose-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 text-slate-800'
+                  : 'bg-white border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-800'
+            "
+          />
+
+          <div
+            *ngIf="
+              isEditMode &&
+              profileForm.get('contactInfo')?.invalid &&
+              profileForm.get('contactInfo')?.dirty
+            "
+            class="mt-1.5 px-1 text-[10px] font-medium text-rose-500 flex items-start gap-1 animate-fade-in"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-3.5 h-3.5 shrink-0"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            <span *ngIf="profileForm.get('contactInfo')?.hasError('required')"
+              >New Contact Number Can't Be Empty!</span
+            >
+
+            <span *ngIf="profileForm.get('contactInfo')?.hasError('pattern')"
+              >Invalid Contact Number</span
+            >
+          </div>
+        </div>
+
+        <div *ngIf="isEditMode" class="pt-2 animate-fade-in">
+          <label
+            for="password"
+            class="block text-[11px] font-medium text-slate-500 mb-1.5 px-1"
+            >Update Password (Optional)</label
+          >
+
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Enter New Password"
+            class="w-full px-4 py-3 bg-white rounded-xl text-sm transition-all"
+            [ngClass]="
+              profileForm.get('password')?.invalid &&
+              profileForm.get('password')?.dirty
+                ? 'bg-rose-50/30 border border-rose-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 text-slate-800'
+                : 'border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-800'
+            "
+          />
+
+          <div
+            *ngIf="
+              profileForm.get('password')?.invalid &&
+              profileForm.get('password')?.dirty
+            "
+            class="mt-1.5 px-1 text-[10px] font-medium text-rose-500 flex items-start gap-1 animate-fade-in"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-3.5 h-3.5 shrink-0"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            <span *ngIf="profileForm.get('password')?.hasError('pattern')"
+              >Min. 8 characters, must include an uppercase letter, lowercase
+              letter, and a special character.</span
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isEditMode && !isLoading"
+    class="p-6 border-t border-slate-100 bg-slate-50 animate-slideUp"
+  >
+    <button
+      type="button"
+      (click)="sendOtp()"
+      [disabled]="profileForm.invalid || isUpdating || !hasChanges"
+      class="w-full py-3.5 rounded-xl text-white font-medium text-sm transition-all flex justify-center items-center gap-2 focus:outline-none disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+      [ngClass]="
+        profileForm.valid && !isUpdating && hasChanges
+          ? 'bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-500/20'
+          : ''
+      "
+    >
+      <svg
+        *ngIf="isUpdating"
+        class="animate-spin h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+
+      <span>{{ isUpdating ? "Saving..." : "Save Changes" }}</span>
+    </button>
+  </div>
+</div>
+
+<app-otp-modal
+  *ngIf="showOtpModal"
+  [email]="profileForm.get('email')?.value"
+  [timerDuration]="90"
+  (verify)="verifyOtp($event)"
+  (resend)="sendOtp()"
+  (closeModal)="closeOtp()"
+>
+</app-otp-modal>

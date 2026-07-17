@@ -1,0 +1,389 @@
+<nav
+  [ngClass]="
+    isAuthScreen
+      ? 'bg-white/95 text-slate-900 border-slate-200 shadow-sm'
+      : 'bg-slate-900/95 text-white border-slate-800 shadow-xl'
+  "
+  class="sticky top-0 z-50 w-full backdrop-blur-md border-b transition-colors duration-300 font-sans select-none"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex w-full justify-between items-center h-20">
+      <div
+        class="flex-shrink flex items-center gap-3.5 cursor-pointer group"
+        routerLink="/"
+      >
+        <div
+          class="w-11 h-11 bg-gradient-to-tr from-indigo-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-indigo-400/30 group-hover:scale-105 transition-transform duration-200"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+            ></path>
+          </svg>
+        </div>
+
+        <span class="font-black text-2xl tracking-tight">
+          StepUp <span class="text-indigo-500">Insurance</span>
+        </span>
+      </div>
+
+      <div
+        class="hidden lg:flex items-center gap-5 text-sm font-extrabold tracking-wide"
+      >
+        <ng-container *ngIf="(isAuthenticated$ | async) === false">
+          <div
+            class="flex items-center gap-2.5 ml-1 pl-2"
+            [ngClass]="isAuthScreen ? 'border-slate-200' : 'border-slate-800'"
+          >
+            <a
+              routerLink="/auth/login"
+              [ngClass]="
+                isAuthScreen
+                  ? 'text-slate-500 hover:text-indigo-600'
+                  : 'text-slate-300 hover:text-white'
+              "
+              class="px-3 py-2 transition-all cursor-pointer uppercase tracking-wider text-xs font-black flex items-center gap-1.5 active:scale-95"
+            >
+              <svg
+                class="w-3.5 h-3.5 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2.5"
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
+
+              Login
+            </a>
+
+            <a
+              routerLink="/auth/register-customer"
+              [ngClass]="
+                isAuthScreen
+                  ? 'bg-slate-50 hover:bg-indigo-50/60 border-slate-200/80 text-slate-700 hover:text-indigo-600'
+                  : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700/80 text-slate-200 hover:text-indigo-400'
+              "
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border transition-all cursor-pointer uppercase tracking-wider text-xs font-black shadow-2xs group/cust active:scale-95"
+            >
+              <svg
+                class="w-3.5 h-3.5 text-indigo-500 group-hover/cust:scale-110 transition-transform duration-200"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+              </svg>
+
+              Register Customer
+            </a>
+
+            <a
+              routerLink="/auth/register-agent"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white transition-all shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] cursor-pointer uppercase tracking-wider text-xs font-black group/agt"
+            >
+              <svg
+                class="w-3.5 h-3.5 text-blue-200 group-hover/agt:rotate-12 transition-transform duration-200"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Register Agent
+            </a>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="isAuthenticated$ | async">
+          <button
+            (click)="toggleProfileDrawer()"
+            class="px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all cursor-pointer uppercase tracking-widest text-xs font-black flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4 text-indigo-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+            </svg>
+
+            Profile
+          </button>
+
+          <a
+            *ngIf="(role$ | async) === 'CUSTOMER'"
+            routerLink="/customer-dashboard"
+            class="px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all cursor-pointer uppercase tracking-widest text-xs font-black flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4 text-indigo-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+            </svg>
+
+            My Policies
+          </a>
+
+          <a
+            *ngIf="(role$ | async) === 'AGENT'"
+            routerLink="/agent-dashboard"
+            class="px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all cursor-pointer uppercase tracking-widest text-xs font-black flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4 text-indigo-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+              />
+            </svg>
+
+            My Dashboard
+          </a>
+
+          <a
+            (click)="logout()"
+            class="ml-1 px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-all cursor-pointer uppercase tracking-wider text-xs font-black flex items-center gap-1.5"
+          >
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+
+            Logout
+          </a>
+        </ng-container>
+
+        <div
+          [ngClass]="isAuthScreen ? 'bg-slate-200' : 'bg-slate-800'"
+          class="h-6 w-px mx-1 transition-colors"
+        ></div>
+
+        <button
+          type="button"
+          (click)="toggleDarkMode()"
+          class="inline-flex h-7 w-14 flex-shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-slate-200 dark:bg-indigo-600 transition-colors duration-300 ease-in-out focus:outline-none shadow-2xs"
+          aria-label="Toggle Dark Mode"
+        >
+          <span
+            class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-300 ease-in-out translate-x-0 dark:translate-x-7 flex items-center justify-center"
+          >
+            <svg
+              class="h-3 w-3 text-slate-400 block dark:hidden"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18.75a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zM6.166 18.894a.75.75 0 001.06 1.06l1.591-1.59a.75.75 0 10-1.06-1.061l-1.591 1.59zM4.5 12a.75.75 0 01-.75-.75H1.5a.75.75 0 010 1.5h2.25a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 00-1.06 1.06l1.59 1.591a.75.75 0 101.061-1.06l-1.59-1.591z"
+              />
+            </svg>
+
+            <svg
+              class="h-3 w-3 text-indigo-600 hidden dark:block"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="lg:hidden flex items-center gap-4">
+        <button
+          type="button"
+          (click)="toggleDarkMode()"
+          class="inline-flex h-7 w-14 flex-shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-slate-200 dark:bg-indigo-600 transition-colors duration-300 ease-in-out focus:outline-none shadow-2xs"
+          aria-label="Toggle Dark Mode"
+        >
+          <span
+            class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-300 ease-in-out translate-x-0 dark:translate-x-7 flex items-center justify-center"
+          >
+            <svg
+              class="h-3 w-3 text-slate-400 block dark:hidden"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18.75a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zM6.166 18.894a.75.75 0 001.06 1.06l1.591-1.59a.75.75 0 10-1.06-1.061l-1.591 1.59zM4.5 12a.75.75 0 01-.75-.75H1.5a.75.75 0 010 1.5h2.25a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 00-1.06 1.06l1.59 1.591a.75.75 0 101.061-1.06l-1.59-1.591z"
+              />
+            </svg>
+
+            <svg
+              class="h-3 w-3 text-indigo-600 hidden dark:block"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+
+        <button
+          (click)="toggleMobileMenu()"
+          [ngClass]="
+            isAuthScreen
+              ? 'bg-slate-100 border-slate-200 text-slate-700'
+              : 'bg-slate-800 border-slate-700 text-slate-300'
+          "
+          class="p-2 shrink-0 rounded-xl transition-all focus:outline-none cursor-pointer border"
+        >
+          <svg
+            *ngIf="!isMobileMenuOpen"
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+
+          <svg
+            *ngIf="isMobileMenuOpen"
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isMobileMenuOpen"
+    [ngClass]="
+      isAuthScreen
+        ? 'bg-white border-slate-200 text-slate-900'
+        : 'bg-slate-900 border-slate-800 text-white'
+    "
+    class="lg:hidden absolute top-20 left-0 w-full border-b shadow-2xl animate-fadeIn z-40 px-6 py-6 space-y-3 font-extrabold tracking-wide transition-colors duration-300"
+  >
+    <ng-container *ngIf="(isAuthenticated$ | async) === false">
+      <a
+        routerLink="/auth/login"
+        (click)="toggleMobileMenu()"
+        [ngClass]="
+          isAuthScreen
+            ? 'bg-slate-100 text-slate-800 border-slate-200/80'
+            : 'bg-slate-800/80 text-slate-200 border-slate-700/60'
+        "
+        class="block px-4 py-3 rounded-xl hover:text-indigo-500 text-xs uppercase tracking-wider text-center border font-black"
+      >
+        Login
+      </a>
+
+      <a
+        routerLink="/auth/register-customer"
+        (click)="toggleMobileMenu()"
+        [ngClass]="
+          isAuthScreen
+            ? 'bg-slate-900 text-white border-slate-900'
+            : 'bg-slate-800 text-indigo-300 border-slate-700'
+        "
+        class="block px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider text-center border shadow-xs font-black"
+      >
+        Register As Customer
+      </a>
+
+      <a
+        routerLink="/auth/register-agent"
+        (click)="toggleMobileMenu()"
+        class="block px-4 py-3.5 rounded-xl bg-indigo-600 text-white text-xs uppercase tracking-wider text-center shadow-md shadow-indigo-500/25 font-black"
+      >
+        Register As Agent
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="isAuthenticated$ | async">
+      <a
+        (click)="toggleProfileDrawer()"
+        class="block px-4 py-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs uppercase tracking-widest text-center font-black"
+      >
+        Profile
+      </a>
+
+      <a
+        *ngIf="(role$ | async) === 'CUSTOMER'"
+        routerLink="/customer-dashboard"
+        (click)="toggleMobileMenu()"
+        class="block px-4 py-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs uppercase tracking-widest text-center font-black"
+      >
+        My Policies
+      </a>
+
+      <a
+        *ngIf="(role$ | async) === 'AGENT'"
+        routerLink="/agent-dashboard"
+        (click)="toggleMobileMenu()"
+        class="block px-4 py-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs uppercase tracking-widest text-center font-black"
+      >
+        Agent Dashboard
+      </a>
+
+      <a
+        (click)="logout(); toggleMobileMenu()"
+        class="block px-4 py-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs uppercase tracking-wider text-center font-black cursor-pointer"
+      >
+        Logout
+      </a>
+    </ng-container>
+  </div>
+</nav>
+
+<app-profile-drawer
+  *ngIf="isProfileDrawerOpen"
+  (closeDrawer)="toggleProfileDrawer()"
+></app-profile-drawer>

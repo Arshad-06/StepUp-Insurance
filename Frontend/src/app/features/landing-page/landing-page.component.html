@@ -1,0 +1,228 @@
+<div class="min-h-[calc(100vh-64px)] bg-slate-50 relative overflow-hidden">
+  <!-- Decorative Background Elements -->
+
+  <div
+    class="absolute top-0 left-0 w-96 h-96 bg-indigo-600 rounded-full filter blur-[128px] mix-blend-multiply opacity-60 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full filter blur-[128px] mix-blend-multiply opacity-60 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute inset-0 z-0 opacity-20"
+    style="
+      background-image: radial-gradient(#6366f1 1px, transparent 1px);
+      background-size: 20px 20px;
+    "
+  ></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
+    <!-- Hero Text -->
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h1
+        class="text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight"
+      >
+        Next-Generation <br />
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500"
+          >Insurance Management</span
+        >
+      </h1>
+
+      <p class="text-lg text-slate-600 font-medium leading-relaxed">
+        Seamlessly Manage Policies, Track Premiums &amp; Scale Your Agency With
+        Our Cutting-Edge, Secure Insurance Portal. Choose Your Path Below To Get
+        Started.
+      </p>
+    </div>
+
+    <!-- Action Cards -->
+
+    <div
+      *ngIf="(isAuthenticated$ | async) === false"
+      class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+    >
+      <!-- Login Card -->
+
+      <div
+        routerLink="/auth/login"
+        class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col items-center text-center"
+      >
+        <div
+          class="w-16 h-16 bg-slate-100 group-hover:bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 transition-colors"
+        >
+          <svg
+            class="w-8 h-8 text-slate-600 group-hover:text-indigo-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+            ></path>
+          </svg>
+        </div>
+
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Existing User</h3>
+
+        <p class="text-slate-500 text-sm mb-6">
+          Sign In To Your Dashboard To Manage Your Active Policies Or Clients.
+        </p>
+
+        <span
+          class="mt-auto text-indigo-600 font-semibold text-sm group-hover:underline"
+          >Sign In &rarr;</span
+        >
+      </div>
+
+      <!-- Customer Registration Card -->
+
+      <div
+        routerLink="/auth/register-customer"
+        class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col items-center text-center relative overflow-hidden"
+      >
+        <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+
+        <div
+          class="w-16 h-16 bg-blue-50 group-hover:bg-blue-100 rounded-2xl flex items-center justify-center mb-6 transition-colors"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ></path>
+          </svg>
+        </div>
+
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Join As Customer</h3>
+
+        <p class="text-slate-500 text-sm mb-6">
+          Register Yourself As A Customer Using An Agent ID To Start Purchasing
+          Policies.
+        </p>
+
+        <span
+          class="mt-auto text-blue-600 font-semibold text-sm group-hover:underline"
+          >Register As Customer &rarr;</span
+        >
+      </div>
+
+      <!-- Agent Registration Card -->
+
+      <div
+        routerLink="/auth/register-agent"
+        class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col items-center text-center relative overflow-hidden"
+      >
+        <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+
+        <div
+          class="w-16 h-16 bg-blue-50 group-hover:bg-blue-100 rounded-2xl flex items-center justify-center mb-6 transition-colors"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ></path>
+          </svg>
+        </div>
+
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Join As Agent</h3>
+
+        <p class="text-slate-500 text-sm mb-6">
+          Register Yourself As An Agent To Track Your Customers, View Their
+          Policies &amp; Get Valuable Insights Through Dashboard Analytics.
+        </p>
+
+        <span
+          class="mt-auto text-blue-600 font-semibold text-sm group-hover:underline"
+          >Register As Agent &rarr;</span
+        >
+      </div>
+    </div>
+
+    <div
+      *ngIf="isAuthenticated$ | async"
+      class="max-w-2xl mx-auto animate-fade-in-up"
+    >
+      <div
+        class="bg-white rounded-3xl p-10 shadow-xl border border-slate-200 text-center relative overflow-hidden transform transition hover:scale-[1.01]"
+      >
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-indigo-500/10 blur-[60px] rounded-full pointer-events-none"
+        ></div>
+
+        <div class="relative z-10">
+          <div
+            class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-indigo-50"
+          >
+            <svg
+              class="w-10 h-10 text-indigo-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              ></path>
+            </svg>
+          </div>
+
+          <h3 class="text-3xl font-extrabold text-slate-900 mb-3">
+            Welcome Back!
+          </h3>
+
+          <p class="text-slate-500 text-lg mb-8">
+            Your Secure Session Is Active. Ready To Explore Your Dashboard?
+          </p>
+
+          <a
+            [routerLink]="
+              (role$ | async) === 'AGENT'
+                ? '/agent-dashboard'
+                : '/customer-dashboard'
+            "
+            class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-slate-900 border border-transparent rounded-xl hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 shadow-lg hover:shadow-indigo-500/30"
+          >
+            Enter My Dashboard
+
+            <svg
+              class="w-5 h-5 ml-2 -mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

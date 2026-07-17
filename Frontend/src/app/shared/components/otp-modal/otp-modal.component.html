@@ -1,0 +1,89 @@
+<div
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in px-4"
+>
+  <div
+    class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-slate-100 text-center flex flex-col items-center"
+  >
+    <div
+      class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-5"
+    >
+      <svg
+        class="w-7 h-7"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+        ></path>
+      </svg>
+    </div>
+
+    <h3 class="text-2xl font-bold text-slate-900 mb-2">Enter OTP</h3>
+
+    <p class="text-sm text-slate-500 mb-6">
+      We sent a 4-digit code to <br />
+
+      <span class="font-semibold text-slate-800">{{ email }}</span>
+    </p>
+
+    <div class="w-full space-y-5">
+      <div
+        class="flex items-center justify-center gap-5 my-6"
+        (paste)="onOtpPaste($event)"
+      >
+        <input
+          *ngFor="let digit of [0, 1, 2, 3]; let i = index"
+          [id]="'otp_box_' + i"
+          type="text"
+          inputmode="numeric"
+          maxlength="1"
+          [(ngModel)]="otpArray[i]"
+          (input)="onOtpInputChange(i, $event)"
+          (keydown)="onOtpBackspace(i, $event)"
+          (focus)="onOtpFocus(i)"
+          (keypress)="restrictToNumbers($event)"
+          [autofocus]="i === 0"
+          autocomplete="one-time-code"
+          class="w-14 h-14 text-center text-2xl font-black rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-800 focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 focus:outline-none shadow-2xs transition-all duration-200 select-none cursor-pointer"
+        />
+      </div>
+
+      <div class="text-sm font-medium">
+        <ng-container *ngIf="!otpExpired">
+          <span class="text-slate-500">Resend code in </span>
+
+          <span class="text-indigo-600 font-bold">{{ displayTime }}</span>
+        </ng-container>
+
+        <button
+          *ngIf="otpExpired"
+          (click)="onResendClick()"
+          class="text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer underline decoration-2 underline-offset-4"
+        >
+          Resend OTP
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3 mt-2">
+        <button
+          (click)="onVerifyClick()"
+          [disabled]="otpControl.invalid || otpExpired"
+          class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+        >
+          Verify OTP
+        </button>
+
+        <button
+          (click)="onCloseClick()"
+          class="w-full bg-slate-100 text-slate-600 font-semibold py-3 rounded-xl hover:bg-slate-200 transition-all"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

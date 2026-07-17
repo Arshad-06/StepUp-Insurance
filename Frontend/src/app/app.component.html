@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+
+<main class="min-h-[calc(100vh-64px)] bg-slate-50">
+  <router-outlet></router-outlet>
+
+  <div
+    *ngIf="toast"
+    class="fixed bottom-5 right-5 z-50 flex items-center p-4 mb-4 w-full max-w-xs rounded-xl shadow-2xl border transition-all duration-300 animate-fade-in-up"
+    [ngClass]="
+      toast.type === 'success'
+        ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+        : 'text-rose-700 bg-rose-50 border-rose-200'
+    "
+  >
+    <svg
+      *ngIf="toast.type === 'success'"
+      class="w-6 h-6 mr-3 flex-shrink-0 text-emerald-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+
+    <svg
+      *ngIf="toast.type === 'error'"
+      class="w-6 h-6 mr-3 flex-shrink-0 text-rose-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+
+    <span class="text-sm font-extrabold tracking-wide">{{
+      toast.message
+    }}</span>
+  </div>
+</main>

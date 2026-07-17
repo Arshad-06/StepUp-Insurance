@@ -1,0 +1,540 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-6 relative overflow-hidden font-sans"
+>
+  <div
+    class="absolute top-0 left-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute inset-0 z-0 opacity-20"
+    style="
+      background-image: radial-gradient(#6366f1 1px, transparent 1px);
+      background-size: 20px 20px;
+    "
+  ></div>
+
+  <div
+    class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-xl p-8 sm:p-10 border border-white/20 relative z-10 animate-fadeIn flex flex-col"
+  >
+    <div class="text-center mb-8">
+      <div
+        class="w-14 h-14 shrink-0 bg-gradient-to-tr from-indigo-600 to-blue-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/30 mb-4 border border-indigo-400/30"
+      >
+        <svg
+          class="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+          ></path>
+        </svg>
+      </div>
+
+      <h2 class="text-3xl font-black text-slate-900 tracking-tight">
+        Welcome Back!
+      </h2>
+
+      <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">
+        Access Your Secure Insurance Space
+      </p>
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-5 flex-1 flex flex-col"
+    >
+      <div>
+        <label
+          for="role"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Role</label
+        >
+
+        <div
+          class="relative"
+          (click)="isRoleMenuOpen = !isRoleMenuOpen"
+          (keydown.enter)="isRoleMenuOpen = !isRoleMenuOpen"
+          (blur)="isRoleMenuOpen = false"
+        >
+          <div
+            [ngClass]="
+              isRoleMenuOpen
+                ? 'bg-white border-indigo-600 ring-4 ring-indigo-600/15'
+                : 'bg-slate-50 border-slate-200'
+            "
+            class="w-full border-2 text-slate-800 font-extrabold rounded-xl px-4 py-3.5 flex items-center justify-between transition-all cursor-pointer text-sm shadow-2xs select-none"
+          >
+            <span
+              [ngClass]="
+                loginForm.get('role')?.value
+                  ? 'text-slate-900 font-bold'
+                  : 'text-slate-400 font-semibold'
+              "
+            >
+              {{
+                loginForm.get("role")?.value === "CUSTOMER"
+                  ? "Customer"
+                  : loginForm.get("role")?.value === "AGENT"
+                    ? "Agent"
+                    : "-- SELECT YOUR ROLE --"
+              }}
+            </span>
+
+            <svg
+              class="w-5 h-5 text-indigo-600 transition-transform duration-200"
+              [ngClass]="{ 'rotate-180': isRoleMenuOpen }"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+
+          <div
+            *ngIf="isRoleMenuOpen"
+            class="absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-indigo-600 overflow-hidden z-50 animate-fadeIn py-1 select-none"
+          >
+            <div
+              (click)="
+                loginForm.get('role')?.setValue('CUSTOMER');
+                isRoleMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                loginForm.get('role')?.setValue('CUSTOMER');
+                isRoleMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                loginForm.get('role')?.value === 'CUSTOMER'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              <div class="flex items-center gap-2.5">
+                <svg
+                  class="w-4 h-4 text-indigo-600 shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  />
+                </svg>
+
+                Customer
+              </div>
+
+              <span
+                *ngIf="loginForm.get('role')?.value === 'CUSTOMER'"
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+
+            <div
+              (click)="
+                loginForm.get('role')?.setValue('AGENT');
+                isRoleMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                loginForm.get('role')?.setValue('AGENT');
+                isRoleMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                loginForm.get('role')?.value === 'AGENT'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              <div class="flex items-center gap-2.5">
+                <svg
+                  class="w-4 h-4 text-indigo-600 shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                  />
+                </svg>
+
+                Agent
+              </div>
+
+              <span
+                *ngIf="loginForm.get('role')?.value === 'AGENT'"
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label
+          for="email"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Email Address</label
+        >
+
+        <div class="flex gap-2 max-w-full items-center">
+          <input
+            type="email"
+            formControlName="email"
+            [readOnly]="!loginForm.get('role')?.value || isEmailVerified"
+            [placeholder]="
+              loginForm.get('role')?.value
+                ? 'name@stepup.com'
+                : 'Select account role first...'
+            "
+            class="flex-1 min-w-0 bg-slate-50 border-2 border-slate-200 text-slate-800 font-bold rounded-xl px-4 py-3.5 focus:outline-none focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 transition-all placeholder:text-slate-400 placeholder:font-medium text-sm read-only:bg-slate-100 read-only:text-slate-400 read-only:focus:ring-0 read-only:focus:border-slate-200 read-only:cursor-not-allowed shadow-2xs"
+          />
+
+          <button
+            type="button"
+            *ngIf="!isEmailVerified"
+            (click)="sendOtp()"
+            [disabled]="
+              !loginForm.get('role')?.value || loginForm.get('email')?.invalid
+            "
+            class="shrink-0 px-5 min-h-[50px] bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer border border-indigo-100 active:scale-95 disabled:opacity-40 disabled:pointer-events-none shadow-2xs"
+          >
+            Verify
+          </button>
+        </div>
+
+        <div
+          *ngIf="
+            loginForm.get('email')?.hasError('required') &&
+            loginForm.get('email')?.dirty
+          "
+          class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+        >
+          <svg
+            class="w-4 h-4 shrink-0 text-rose-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          Email Is Required
+        </div>
+
+        <div
+          *ngIf="
+            loginForm.get('email')?.hasError('email') &&
+            loginForm.get('email')?.dirty
+          "
+          class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+        >
+          <svg
+            class="w-4 h-4 shrink-0 text-rose-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          Invalid Email Format
+        </div>
+
+        <div
+          *ngIf="loginForm.get('email')?.hasError('emailNotFound')"
+          class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+        >
+          <svg
+            class="w-4 h-4 shrink-0 text-rose-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          Email Not Found In System
+        </div>
+
+        <div
+          *ngIf="isEmailVerified"
+          class="mt-2 p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider animate-fadeIn"
+        >
+          <svg
+            class="w-4 h-4 bg-emerald-600 text-white rounded-full p-0.5 shrink-0 shadow-xs"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+
+          Verification Completed
+        </div>
+      </div>
+
+      <div class="space-y-3 relative animate-fade-in">
+        <div class="flex justify-between items-end px-1">
+          <label
+            for="password"
+            class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >
+            {{ isResetMode ? "Create New Password" : "Password" }}
+          </label>
+
+          <button
+            *ngIf="!isResetMode && securedResetToken"
+            type="button"
+            (click)="toggleResetMode()"
+            class="text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer focus:outline-none"
+          >
+            Forgot Password?
+          </button>
+
+          <button
+            *ngIf="isResetMode"
+            type="button"
+            (click)="toggleResetMode()"
+            class="text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors cursor-pointer focus:outline-none"
+          >
+            Cancel
+          </button>
+        </div>
+
+        <div *ngIf="!isResetMode" class="relative">
+          <div
+            class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+          >
+            <i class="fas fa-lock text-slate-400"></i>
+          </div>
+
+          <input
+            type="password"
+            formControlName="password"
+            class="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 font-bold rounded-xl px-4 py-3.5 focus:outline-none focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 transition-all placeholder:text-slate-300 text-sm shadow-2xs"
+            placeholder="Enter Your Password"
+          />
+        </div>
+
+        <div
+          *ngIf="isResetMode"
+          class="p-5 bg-indigo-50/40 rounded-2xl border border-indigo-100 shadow-inner animate-fade-in overflow-hidden space-y-4"
+        >
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+            >
+              <i class="fas fa-key text-indigo-400"></i>
+            </div>
+
+            <input
+              type="password"
+              [formControl]="newPasswordCtrl"
+              placeholder="Enter New Password"
+              class="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 font-bold rounded-xl px-4 py-3.5 focus:outline-none focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 transition-all placeholder:text-slate-400 placeholder:font-medium text-sm shadow-2xs"
+            />
+
+            <div
+              *ngIf="
+                newPasswordCtrl.hasError('required') && newPasswordCtrl.dirty
+              "
+              class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+            >
+              <svg
+                class="w-4 h-4 shrink-0 text-rose-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Password Is Required
+            </div>
+
+            <div
+              *ngIf="
+                newPasswordCtrl.hasError('pattern') && newPasswordCtrl.dirty
+              "
+              class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+            >
+              <svg
+                class="w-4 h-4 shrink-0 text-rose-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Password must contain at least one uppercase character, one
+              lowercase character, one special symbol and length should be
+              minimum of 8 characters
+            </div>
+          </div>
+
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+            >
+              <i class="fas fa-check-double text-indigo-400"></i>
+            </div>
+
+            <input
+              type="password"
+              [formControl]="confirmPasswordCtrl"
+              placeholder="Confirm New Password"
+              class="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 font-bold rounded-xl px-4 py-3.5 focus:outline-none focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 transition-all placeholder:text-slate-400 placeholder:font-medium text-sm shadow-2xs"
+            />
+
+            <div
+              *ngIf="
+                confirmPasswordCtrl.dirty &&
+                newPasswordCtrl.value !== confirmPasswordCtrl.value
+              "
+              class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+            >
+              <svg
+                class="w-4 h-4 shrink-0 text-rose-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Passwords Do Not Match
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8" *ngIf="isEmailVerified">
+        <button
+          type="button"
+          (click)="isResetMode ? onResetPasswordSubmit() : onSubmit()"
+          [disabled]="
+            isLoading ||
+            (isResetMode
+              ? isResetInvalid()
+              : loginForm.invalid || !isEmailVerified)
+          "
+          class="flex items-center justify-center gap-2 w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm uppercase tracking-widest rounded-xl shadow-lg shadow-indigo-500/30 transition-all cursor-pointer active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none"
+        >
+          <svg
+            *ngIf="isLoading"
+            class="animate-spin h-5 w-5 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+
+          <span>{{
+            isLoading
+              ? isResetMode
+                ? "Updating..."
+                : "Signing In..."
+              : isResetMode
+                ? "Update
+
+                        Password"
+                : "Sign In"
+          }}</span>
+        </button>
+      </div>
+
+      <div
+        class="pt-4 border-t border-slate-100 flex flex-col items-center justify-center gap-2 mt-auto"
+      >
+        <span class="text-xs font-black text-slate-400 uppercase tracking-wider"
+          >Don't have an account?</span
+        >
+
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <a
+            routerLink="/auth/register-customer"
+            class="px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 font-extrabold text-xs transition-all border border-slate-200/80 hover:border-indigo-200"
+          >
+            Register As Customer
+          </a>
+
+          <a
+            routerLink="/auth/register-agent"
+            class="px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 font-extrabold text-xs transition-all border border-slate-200/80 hover:border-indigo-200"
+          >
+            Register As Agent
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <app-otp-modal
+    *ngIf="showOtpModal"
+    [email]="loginForm.get('email')?.value"
+    [timerDuration]="90"
+    (verify)="verifyOtp($event)"
+    (resend)="sendOtp()"
+    (closeModal)="close()"
+  >
+  </app-otp-modal>
+</div>

@@ -1,0 +1,704 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center bg-slate-50 p8 py-10 relative overflow-hidden font-sans"
+>
+  <div
+    class="absolute top-0 left-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse"
+  ></div>
+
+  <div
+    class="absolute inset-0 z-0 opacity-20"
+    style="
+      background-image: radial-gradient(#6366f1 1px, transparent 1px);
+      background-size: 20px 20px;
+    "
+  ></div>
+
+  <div
+    class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-xl p-8 sm:p-10 border border-white/20 relative z-10 animate-fadeIn flex flex-col"
+  >
+    <div class="text-center mb-8">
+      <div
+        class="w-14 h-14 shrink-0 bg-gradient-to-tr from-indigo-600 to-blue-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/30 mb-4 border border-indigo-400/30"
+      >
+        <svg
+          class="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+          ></path>
+        </svg>
+      </div>
+
+      <h2 class="text-3xl font-black text-slate-900 tracking-tight py-2">
+        Purchase A New Policy
+      </h2>
+
+      <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">
+        Secure your future with a new policy
+      </p>
+    </div>
+
+    <form
+      [formGroup]="purchaseForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-5 flex-1 flex flex-col"
+    >
+      <div>
+        <label
+          for="policyType"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Policy Type</label
+        >
+
+        <div
+          class="relative"
+          (click)="togglePolicyTypeMenu()"
+          (keydown.enter)="togglePolicyTypeMenu()"
+          (blur)="onPolicyTypeBlur()"
+        >
+          <div
+            [ngClass]="
+              isPolicyTypeMenuOpen
+                ? 'bg-white border-indigo-600 ring-4 ring-indigo-600/15'
+                : 'bg-slate-50 border-slate-200'
+            "
+            class="w-full border-2 text-slate-800 font-extrabold rounded-xl px-4 py-3.5 flex items-center justify-between transition-all cursor-pointer text-sm shadow-2xs select-none"
+          >
+            <span
+              [ngClass]="
+                purchaseForm.get('policyType')?.value
+                  ? 'text-slate-900 font-bold'
+                  : 'text-slate-400 font-semibold'
+              "
+            >
+              {{
+                purchaseForm.get("policyType")?.value === "HEALTH_INSURANCE"
+                  ? "Health Insurance"
+                  : purchaseForm.get("policyType")?.value === "LIFE_INSURANCE"
+                    ? "Life Insurance"
+                    : purchaseForm.get("policyType")?.value === "HOME_INSURANCE"
+                      ? "Home Insurance"
+                      : purchaseForm.get("policyType")?.value ===
+                          "VEHICLE_INSURANCE"
+                        ? "Vehicle Insurance"
+                        : "SELECT YOUR POLICY TYPE"
+              }}
+            </span>
+
+            <svg
+              class="w-5 h-5 text-indigo-600 transition-transform duration-200"
+              [ngClass]="{ 'rotate-180': isPolicyTypeMenuOpen }"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+
+          <div
+            *ngIf="isPolicyTypeMenuOpen"
+            class="absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-indigo-600 overflow-hidden z-50 animate-fadeIn py-1 select-none"
+          >
+            <div
+              (click)="
+                purchaseForm.get('policyType')?.setValue('HEALTH_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                purchaseForm.get('policyType')?.setValue('HEALTH_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                purchaseForm.get('policyType')?.value === 'HEALTH_INSURANCE'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              Health Insurance
+
+              <span
+                *ngIf="
+                  purchaseForm.get('policyType')?.value === 'HEALTH_INSURANCE'
+                "
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+
+            <div
+              (click)="
+                purchaseForm.get('policyType')?.setValue('LIFE_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                purchaseForm.get('policyType')?.setValue('LIFE_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                purchaseForm.get('policyType')?.value === 'LIFE_INSURANCE'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              Life Insurance
+
+              <span
+                *ngIf="
+                  purchaseForm.get('policyType')?.value === 'LIFE_INSURANCE'
+                "
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+
+            <div
+              (click)="
+                purchaseForm.get('policyType')?.setValue('HOME_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                purchaseForm.get('policyType')?.setValue('HOME_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                purchaseForm.get('policyType')?.value === 'HOME_INSURANCE'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              Home Insurance
+
+              <span
+                *ngIf="
+                  purchaseForm.get('policyType')?.value === 'HOME_INSURANCE'
+                "
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+
+            <div
+              (click)="
+                purchaseForm.get('policyType')?.setValue('VEHICLE_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              (keydown.enter)="
+                purchaseForm.get('policyType')?.setValue('VEHICLE_INSURANCE');
+                isPolicyTypeMenuOpen = false;
+                $event.stopPropagation()
+              "
+              [ngClass]="
+                purchaseForm.get('policyType')?.value === 'VEHICLE_INSURANCE'
+                  ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                  : 'text-slate-700 hover:bg-slate-100 font-bold'
+              "
+              class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+            >
+              Vehicle Insurance
+
+              <span
+                *ngIf="
+                  purchaseForm.get('policyType')?.value === 'VEHICLE_INSURANCE'
+                "
+                class="text-xs"
+                >✓</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('policyType')?.hasError('required') &&
+          purchaseForm.get('policyType')?.touched
+        "
+        class="text-red-500 text-sm"
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Please select policy type
+      </div>
+
+      <div>
+        <label
+          for="policyStartDate"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Policy Start Date</label
+        >
+
+        <div
+          [ngClass]="
+            isDatePickerOpen
+              ? 'bg-white border-indigo-600 ring-4 ring-indigo-600/15'
+              : 'bg-slate-50 border-slate-200'
+          "
+          class="w-full border-2 text-slate-800 font-extrabold rounded-xl flex items-center justify-between transition-all text-sm shadow-2xs select-none relative overflow-hidden"
+        >
+          <input
+            type="date"
+            formControlName="policyStartDate"
+            [min]="today"
+            (focus)="isDatePickerOpen = true"
+            (blur)="onDateBlur()"
+            [ngClass]="
+              purchaseForm.get('policyStartDate')?.value
+                ? 'text-slate-900 font-bold'
+                : 'text-slate-400 font-semibold'
+            "
+            class="w-full h-full rounded-xl px-4 py-3.5 border-none outline-none bg-transparent"
+          />
+        </div>
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('policyStartDate')?.hasError('required') &&
+          purchaseForm.get('policyStartDate')?.touched
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Please select policy start date
+      </div>
+
+      <div>
+        <div>
+          <label
+            for="policyTerm"
+            class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+            >Duration (Years)</label
+          >
+
+          <div
+            class="relative"
+            (click)="togglePolicyTermMenu()"
+            (keydown.enter)="togglePolicyTypeMenu()"
+            (blur)="onPolicyTermBlur()"
+          >
+            <div
+              [ngClass]="
+                isPolicyTermMenuOpen
+                  ? 'bg-white border-indigo-600 ring-4 ring-indigo-600/15'
+                  : 'bg-slate-50 border-slate-200'
+              "
+              class="w-full border-2 text-slate-800 font-extrabold rounded-xl px-4 py-3.5 flex items-center justify-between transition-all cursor-pointer text-sm shadow-2xs select-none"
+            >
+              <span
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value
+                    ? 'text-slate-900 font-bold'
+                    : 'text-slate-400 font-semibold'
+                "
+              >
+                {{
+                  purchaseForm.get("policyTerm")?.value === "5"
+                    ? "5 Years"
+                    : purchaseForm.get("policyTerm")?.value === "10"
+                      ? "10 Years"
+                      : purchaseForm.get("policyTerm")?.value === "15"
+                        ? "15 Years"
+                        : purchaseForm.get("policyTerm")?.value === "20"
+                          ? "20 Years"
+                          : purchaseForm.get("policyTerm")?.value === "25"
+                            ? "25 Years"
+                            : "SELECT YOUR POLICY TERM"
+                }}
+              </span>
+
+              <svg
+                class="w-5 h-5 text-indigo-600 transition-transform duration-200"
+                [ngClass]="{ 'rotate-180': isPolicyTermMenuOpen }"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2.5"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            <div
+              *ngIf="isPolicyTermMenuOpen"
+              class="absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-indigo-600 overflow-hidden z-50 animate-fadeIn py-1 select-none"
+            >
+              <div
+                (click)="
+                  purchaseForm.get('policyTerm')?.setValue('5');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                (keydown.enter)="
+                  purchaseForm.get('policyTerm')?.setValue('5');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value === '5'
+                    ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                    : 'text-slate-700 hover:bg-slate-100 font-bold'
+                "
+                class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+              >
+                5
+
+                <span
+                  *ngIf="purchaseForm.get('policyTerm')?.value === '5'"
+                  class="text-xs"
+                  >✓</span
+                >
+              </div>
+
+              <div
+                (click)="
+                  purchaseForm.get('policyTerm')?.setValue('10');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                (keydown.enter)="
+                  purchaseForm.get('policyTerm')?.setValue('10');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value === '10'
+                    ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                    : 'text-slate-700 hover:bg-slate-100 font-bold'
+                "
+                class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+              >
+                10
+
+                <span
+                  *ngIf="purchaseForm.get('policyTerm')?.value === '10'"
+                  class="text-xs"
+                  >✓</span
+                >
+              </div>
+
+              <div
+                (click)="
+                  purchaseForm.get('policyTerm')?.setValue('15');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                (keydown.enter)="
+                  purchaseForm.get('policyTerm')?.setValue('15');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value === '15'
+                    ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                    : 'text-slate-700 hover:bg-slate-100 font-bold'
+                "
+                class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+              >
+                15
+
+                <span
+                  *ngIf="purchaseForm.get('policyTerm')?.value === '15'"
+                  class="text-xs"
+                  >✓</span
+                >
+              </div>
+
+              <div
+                (click)="
+                  purchaseForm.get('policyTerm')?.setValue('20');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                (keydown.enter)="
+                  purchaseForm.get('policyTerm')?.setValue('20');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value === '20'
+                    ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                    : 'text-slate-700 hover:bg-slate-100 font-bold'
+                "
+                class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+              >
+                20
+
+                <span
+                  *ngIf="purchaseForm.get('policyTerm')?.value === '20'"
+                  class="text-xs"
+                  >✓</span
+                >
+              </div>
+
+              <div
+                (click)="
+                  purchaseForm.get('policyTerm')?.setValue('25');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                (keydown.enter)="
+                  purchaseForm.get('policyTerm')?.setValue('25');
+                  isPolicyTermMenuOpen = false;
+                  $event.stopPropagation()
+                "
+                [ngClass]="
+                  purchaseForm.get('policyTerm')?.value === '25'
+                    ? 'bg-indigo-50/80 text-indigo-700 font-black'
+                    : 'text-slate-700 hover:bg-slate-100 font-bold'
+                "
+                class="px-4 py-3 cursor-pointer transition-colors flex items-center justify-between text-sm"
+              >
+                25
+
+                <span
+                  *ngIf="purchaseForm.get('policyTerm')?.value === '25'"
+                  class="text-xs"
+                  >✓</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('policyTerm')?.hasError('required') &&
+          purchaseForm.get('policyTerm')?.touched
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Please select policy term.
+      </div>
+
+      <div>
+        <label
+          for="premiumAmount"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Premium Amount</label
+        >
+
+        <input
+          type="number"
+          formControlName="premiumAmount"
+          placeholder="ENTER PREMIUM AMOUNT"
+          class="mt-1 block w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-800 font-semibold shadow-2xs transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 outline-none"
+        />
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('premiumAmount')?.hasError('required') &&
+          purchaseForm.get('premiumAmount')?.dirty
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Please enter premium amount.
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('premiumAmount')?.hasError('min') &&
+          purchaseForm.get('premiumAmount')?.dirty
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Premium amount should be atleast 100.
+      </div>
+
+      <div>
+        <label
+          for="nominee"
+          class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-1.5 ml-1"
+          >Nominee name</label
+        >
+
+        <input
+          type="text"
+          formControlName="nominee"
+          placeholder="ENTER FULL NAME OF NOMINEE"
+          class="mt-1 block w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-800 font-semibold shadow-2xs transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 outline-none"
+        />
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('nominee')?.hasError('required') &&
+          purchaseForm.get('nominee')?.dirty
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Please enter nominee name.
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('nominee')?.hasError('pattern') &&
+          purchaseForm.get('nominee')?.dirty
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Nominee name must start with uppercase character followed by lowercase.
+      </div>
+
+      <div
+        *ngIf="
+          purchaseForm.get('nominee')?.hasError('nameMatchError') &&
+          purchaseForm.get('nominee')?.dirty
+        "
+        class="mt-2 p-2.5 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl flex items-center gap-2 text-xs font-bold animate-fadeIn"
+      >
+        <svg
+          class="w-4 h-4 shrink-0 text-rose-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        Nominee name cannot be same as customer name.
+      </div>
+
+      <div class="flex flex-col gap-3 pt-4 border-t border-slate-100">
+        <button
+          type="submit"
+          [disabled]="purchaseForm.invalid || isSubmitting"
+          class="w-full px-4 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm uppercase tracking-widest rounded-xl shadow-lg shadow-indigo-500/30 transition-all cursor-pointer active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none"
+        >
+          <span class="flex items-center justify-center">
+            <span
+              *ngIf="isSubmitting"
+              class="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"
+            ></span>
+
+            {{ isSubmitting ? "Processing..." : "Confirm Purchase" }}
+          </span>
+        </button>
+
+        <button
+          type="submit"
+          routerLink="/customer-dashboard"
+          class="w-full px-4 py-4 bg-white text-slate-700 font-black text-sm uppercase tracking-widest rounded-xl shadow-lg transition-all border-2 border-slate-200 enabled:hover:bg-slate-100 cursor-pointer active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
