@@ -3,7 +3,7 @@ name: StepUp Insurance Full-Stack CI/CD
 on:
   push:
     branches: [ "main" ] # Triggers the pipeline automatically on push to main
-  workflow_dispatch:  
+    
 jobs:
   # -----------------------------------------------------------
   # BACKEND DEPLOYMENT (Spring Boot to Render via Webhook)
