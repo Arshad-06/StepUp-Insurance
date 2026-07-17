@@ -14,10 +14,15 @@ jobs:
       run:
         working-directory: ./Frontend
     steps:
-      - name: Checkout Source Code
+- name: Checkout Source Code
         uses: actions/checkout@v4
 
+      # We don't need to set up Node, install dependencies, or run npm build here!
+      # Vercel's cloud containers will do all of that natively using your project settings.
+
       - name: Deploy Production Artifacts to Vercel
+        # Running it from the root directory lets Vercel use the "Root Directory: Frontend" 
+        # setting you configured in your Vercel Dashboard seamlessly.
         run: npx vercel@latest --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
