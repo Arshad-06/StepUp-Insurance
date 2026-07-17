@@ -24,7 +24,7 @@ export interface UserProfile {
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:8765';
+  private readonly baseUrl = 'https://stepup-insurance.onrender.com';
 
   constructor(private readonly http: HttpClient) {}
 
