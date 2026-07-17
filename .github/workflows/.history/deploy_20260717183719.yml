@@ -1,0 +1,52 @@
+name: StepUp Insurance Full-Stack CI/CD
+
+on:
+  push:
+    branches: [ "main" ] # Triggers the pipeline automatically on push to main
+
+jobs:
+  # -----------------------------------------------------------
+  # BACKEND DEPLOYMENT (Spring Boot to Render via Webhook)
+  # -----------------------------------------------------------
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deployment
+        # Render builds the container internally. We just need to ping their hook.
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+  # -----------------------------------------------------------
+  # FRONTEND DEPLOYMENT (Angular Compilation & Upload to Vercel)
+  # -----------------------------------------------------------
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Frontend # Changes context to your Angular sub-folder
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-working-directory: ./Frontend
+
+      - name: Install Project Dependencies
+        # Automatically handles legacy peer dependency flags during clean install
+        run: npm ci --legacy-peer-deps
+
+      - name: Compile Production Build
+        run: npm run build -- --configuration=production
+
+      - name: Deploy Production Artifacts to Vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./Frontend
