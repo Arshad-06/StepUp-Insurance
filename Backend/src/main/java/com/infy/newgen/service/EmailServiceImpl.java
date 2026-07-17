@@ -17,10 +17,10 @@ import com.infy.newgen.dto.PaymentReminderDTO;
 @Transactional
 public class EmailServiceImpl implements EmailService {
 
-    @Value("${MAIL_PASSWORD}") // Maps your SendGrid API key secret
+    @Value("${spring.mail.password}") // Maps your SendGrid API key secret
     private String sendGridApiKey;
 
-    @Value("${MAIL_USER}") // Maps your verified SendGrid sender email
+    @Value("${spring.mail.username}") // Maps your verified SendGrid sender email
     private String fromEmail;
 
     // Create a single shared instance of RestClient pointing to SendGrid
