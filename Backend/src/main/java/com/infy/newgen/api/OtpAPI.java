@@ -30,7 +30,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/otp")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://step-up-insurance.vercel.app/")
 @Validated
 public class OtpAPI {
     @Autowired

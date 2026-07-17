@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/profile")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://step-up-insurance.vercel.app/")
 public class ProfileAPI {
     @Autowired
     private ProfileService profileService;

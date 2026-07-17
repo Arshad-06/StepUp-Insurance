@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/agent")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://step-up-insurance.vercel.app/")
 @Validated
 public class AgentAPI {
     @Autowired
