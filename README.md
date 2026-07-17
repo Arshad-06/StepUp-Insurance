@@ -14,7 +14,7 @@ An enterprise-grade, full-stack insurance ecosystem engineered to deliver seamle
                                 ▼
     ┌────────────────────────────────────────────────────────┐
     │            Spring Boot REST API Gateway                │
-    │  (Java 17, Spring Security JWT, Rate-Limiting Filter)  │
+    │  (Java 21, Spring Security JWT, Rate-Limiting Filter)  │
     └───────────────────────────┬────────────────────────────┘
                                 │
         ┌───────────────────────┼───────────────────────┐
@@ -36,7 +36,7 @@ An enterprise-grade, full-stack insurance ecosystem engineered to deliver seamle
 *   **State & Theme Management:** Custom reactive state drivers supporting seamless **Global Dark Mode / Light Mode** switching across all viewport modules.
 
 ### ⚙️ Backend Core Infrastructure
-*   **Runtime Environment:** Java 17 / Spring Boot 3.x configured with customized Hibernate JPA mapping layer.
+*   **Runtime Environment:** Java 21 / Spring Boot 4.x configured with customized Hibernate JPA mapping layer.
 *   **Database Engine:** MySQL Database with optimized relational constraints and indexes on high-frequency search vectors.
 *   **Cloud Production Deployments:** 
     *   **Frontend:** Vercel (Edge-network static hosting with automated production builds).
