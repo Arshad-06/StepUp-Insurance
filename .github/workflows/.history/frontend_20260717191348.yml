@@ -4,7 +4,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'Frontend/**' # ONLY triggers if files inside the Frontend folder change
-      - '.github/workflows/frontend.yml'
+      - '.github/workflows/backend.yml'
   workflow_dispatch:
 
 jobs:
