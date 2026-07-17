@@ -23,11 +23,6 @@ public class EmailServiceImpl implements EmailService {
     @Value("${MAIL_USER}") // Maps your verified SendGrid sender email
     private String fromEmail;
 
-    // Create a single shared instance of RestClient pointing to SendGrid
-    private final RestClient restClient = RestClient.builder()
-            .baseUrl("https://api.sendgrid.com/v3")
-            .build();
-
     @Override
     @Async
     public void sendOtp(OTPVerificationDTO dto) {
@@ -75,31 +70,32 @@ public class EmailServiceImpl implements EmailService {
     /**
      * Helper method to compile the SendGrid Payload and execute the HTTP request
      */
-    private void sendEmailViaHttp(String toEmail, String subject, String contentText) {
-        // Build the nested JSON structure required by SendGrid's API
+private void sendEmailViaHttp(String toEmail, String subject, String contentText) {
+        // Precise JSON payload map for Brevo v3 Transactional SMTP Mail
         Map<String, Object> payload = Map.of(
-            "personalizations", List.of(
-                Map.of("to", List.of(Map.of("email", toEmail)))
-            ),
-            "from", Map.of("email", fromEmail, "name", "StepUp Insurance"),
+            "sender", Map.of("email", fromEmail, "name", "StepUp Insurance"),
+            "to", List.of(Map.of("email", toEmail)),
             "subject", subject,
-            "content", List.of(
-                Map.of("type", "text/plain", "value", contentText)
-            )
+            "textContent", contentText
         );
 
         try {
-            restClient.post()
-                    .uri("/mail/send")
-                    .header("Authorization", "Bearer " + sendGridApiKey)
+            // Updated to Brevo's official v3 production base URL
+            RestClient brevoClient = RestClient.builder()
+                    .baseUrl("https://api.brevo.com/v3")
+                    .build();
+
+            brevoClient.post()
+                    .uri("/smtp/email") // Points to the transactional endpoint, not campaigns
+                    .header("api-key", sendGridApiKey) // Holds your Brevo v3 API key string
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(payload)
                     .retrieve()
-                    .toBodilessEntity(); // Expecting no response body back on a 202 Success
+                    .toBodilessEntity();
             
-            System.out.println("Email successfully delivered to " + toEmail + " via Web API!");
+            System.out.println("Transactional email instantly sent to " + toEmail + " via Brevo v3 API!");
         } catch (Exception e) {
-            System.err.println("Failed to transmit email over HTTPS payload: " + e.getMessage());
+            System.err.println("Failed to transmit email over Brevo HTTP payload: " + e.getMessage());
         }
     }
 }
