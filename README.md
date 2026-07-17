@@ -1,4 +1,4 @@
-# 🛡️ StepUp Insurance: Enterprise Micro-Lending & Flex-Credit Platform
+# 🛡️ StepUp Insurance: Enterprise Insurance Policy Management Platform
 
 An enterprise-grade, full-stack insurance ecosystem engineered to deliver seamless policy management, automated compliance, and real-time analytical dashboards. Built with a high-throughput Java/Spring Boot backend, a responsive Angular frontend, and automated CI/CD pipelines, this platform prioritizes low-latency execution, defensive form design, and bulletproof security.
 
